@@ -1,4 +1,3 @@
-import { SplineSceneBasic } from "@/components/ui/demo";
 import { Code2, MonitorSmartphone, Palette, ArrowRight, Github, Twitter, Linkedin, Mail } from "lucide-react";
 import { ReactNode, useState, useEffect } from "react";
 import { motion } from "framer-motion";
@@ -55,7 +54,6 @@ function FadeInSection({ children, delay = 0, className, key }: { children: Reac
 }
 
 export default function App() {
-  const [isSplineLoaded, setIsSplineLoaded] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -116,8 +114,11 @@ export default function App() {
       </nav>
 
       {/* Hero Section */}
-      <main id="home" className="relative z-10 w-full h-screen overflow-hidden bg-[#1d1e26]">
-        <SplineSceneBasic onLoad={() => setIsSplineLoaded(true)} />
+      <main id="home" className="relative z-10 w-full h-screen flex flex-col items-center justify-center overflow-hidden bg-[#1d1e26]">
+        <div className="text-center z-30 px-6">
+          <h1 className="text-6xl md:text-9xl font-display font-medium text-white tracking-tighter">M. Heller</h1>
+          <p className="text-neutral-400 font-mono text-sm md:text-base tracking-widest uppercase mt-6">Creative Technologist</p>
+        </div>
         {/* Extreme immersive ambient color glow at the bottom of the Hero section, blending into the orange section */}
         <div className="absolute bottom-0 left-0 right-0 h-[450px] sm:h-[600px] md:h-[750px] bg-gradient-to-t from-[#f97316]/20 via-[#ea580c]/10 via-[#7c2d12]/5 to-transparent pointer-events-none z-20 blur-[120px]" />
         <div className="absolute bottom-0 left-0 right-0 h-[250px] sm:h-[350px] md:h-[450px] bg-gradient-to-t from-[#f97316]/10 via-[#ea580c]/5 to-transparent pointer-events-none z-20 blur-[80px]" />
