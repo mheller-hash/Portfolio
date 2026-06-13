@@ -1,0 +1,6 @@
+{
+  "name": "3D Spline Scene Showcase",
+  "description": "An interactive 3D showcase using Spline scenes, spotlights, and smooth transitions.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
