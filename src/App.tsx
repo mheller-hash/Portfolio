@@ -1,3 +1,4 @@
+import { SplineSceneBasic } from "@/components/ui/demo";
 import { Code2, MonitorSmartphone, Palette, ArrowRight, Github, Twitter, Linkedin, Mail } from "lucide-react";
 import { ReactNode, useState, useEffect } from "react";
 import { motion } from "framer-motion";
@@ -54,6 +55,7 @@ function FadeInSection({ children, delay = 0, className, key }: { children: Reac
 }
 
 export default function App() {
+  const [isSplineLoaded, setIsSplineLoaded] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -115,6 +117,7 @@ export default function App() {
 
       {/* Hero Section */}
       <main id="home" className="relative z-10 w-full h-screen flex flex-col items-center justify-center overflow-hidden bg-[#1d1e26]">
+        <SplineSceneBasic onLoad={() => setIsSplineLoaded(true)} />
         <div className="text-center z-30 px-6">
           <h1 className="text-6xl md:text-9xl font-display font-medium text-white tracking-tighter">M. Heller</h1>
           <p className="text-neutral-400 font-mono text-sm md:text-base tracking-widest uppercase mt-6">Creative Technologist</p>
