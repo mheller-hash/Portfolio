@@ -1,6 +1,6 @@
 import { SplineSceneBasic } from "@/components/ui/demo";
 import { Code2, MonitorSmartphone, Palette, ArrowRight, Github, Twitter, Linkedin, Mail } from "lucide-react";
-import { ReactNode, useState, useEffect } from "react";
+import React, { ReactNode, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 interface Project {
@@ -39,7 +39,7 @@ const PROJECTS: Project[] = [
   }
 ];
 
-function FadeInSection({ children, delay = 0, className, key }: { children: ReactNode, delay?: number, className?: string, key?: string | number }) {
+const FadeInSection: React.FC<{ children: ReactNode; delay?: number; className?: string }> = ({ children, delay = 0, className }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -52,10 +52,9 @@ function FadeInSection({ children, delay = 0, className, key }: { children: Reac
       {children}
     </motion.div>
   );
-}
+};
 
 export default function App() {
-  const [isSplineLoaded, setIsSplineLoaded] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -117,7 +116,7 @@ export default function App() {
 
       {/* Hero Section */}
       <main id="home" className="relative z-10 w-full h-screen flex flex-col items-center justify-center overflow-hidden bg-[#1d1e26]">
-        <SplineSceneBasic onLoad={() => setIsSplineLoaded(true)} />
+        <SplineSceneBasic />
         {/* Extreme immersive ambient color glow at the bottom of the Hero section, blending into the orange section */}
         <div className="absolute bottom-0 left-0 right-0 h-[450px] sm:h-[600px] md:h-[750px] bg-gradient-to-t from-[#f97316]/20 via-[#ea580c]/10 via-[#7c2d12]/5 to-transparent pointer-events-none z-20 blur-[120px]" />
         <div className="absolute bottom-0 left-0 right-0 h-[250px] sm:h-[350px] md:h-[450px] bg-gradient-to-t from-[#f97316]/10 via-[#ea580c]/5 to-transparent pointer-events-none z-20 blur-[80px]" />
