@@ -33,15 +33,15 @@ export function SplineSceneBasic({ onLoad }: { onLoad?: (splineApp?: any) => voi
   
   const yScrollRaw = useTransform(scrollYProgress, [0, 1], [0, 20]);
   // Super smooth, highly-damped spring to eliminate any shaky, wobbly scale or scroll jumps with fast rest-kill to optimize performance
-  const yScrollSpring = useSpring(yScrollRaw, { stiffness: 45, damping: 25, restSpeed: 0.001, restDelta: 0.001 });
+  const yScrollSpring = useSpring(yScrollRaw, { stiffness: 35, damping: 28, restSpeed: 0.005, restDelta: 0.005 });
 
   // Mouse proximity states for pseudo-3D parallax gaze/offset
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
   // Super soft, premium springs that glide instead of popping back violently, with rest-kill to save CPU ticks
-  const springX = useSpring(mouseX, { stiffness: 40, damping: 24, restSpeed: 0.001, restDelta: 0.001 });
-  const springY = useSpring(mouseY, { stiffness: 40, damping: 24, restSpeed: 0.001, restDelta: 0.001 });
+  const springX = useSpring(mouseX, { stiffness: 30, damping: 26, restSpeed: 0.005, restDelta: 0.005 });
+  const springY = useSpring(mouseY, { stiffness: 30, damping: 26, restSpeed: 0.005, restDelta: 0.005 });
 
   // Map normalized coordinates into subtle, elegant rotation & translation ranges (reduced to prevent shakiness)
   const rotateY = useTransform(springX, [-0.5, 0.5], [-1.5, 1.5]);
@@ -51,18 +51,21 @@ export function SplineSceneBasic({ onLoad }: { onLoad?: (splineApp?: any) => voi
 
   // Combined vertical animation offsets to prevent key duplicate issues in style maps
   const combinedY = useTransform([yScrollSpring, yOffset], ([yScrollVal, yOffsetVal]) => {
+    if (isMobile) return 0;
     return (yScrollVal as number) + (yOffsetVal as number);
   });
 
   const handleMouseEnter = () => {
+    if (isMobile) return; // ignore mouse effects on mobile
     if (containerRef.current) {
       rectRef.current = containerRef.current.getBoundingClientRect();
     }
   };
 
   const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (isMobile) return; // ignore mouse effects on mobile
     const now = performance.now();
-    if (now - lastMouseUpdate.current < 16) return; // Limit CPU-intensive state changes to max ~60 FPS
+    if (now - lastMouseUpdate.current < 32) return; // Limit CPU-intensive state changes to cap at ~30 FPS
     lastMouseUpdate.current = now;
 
     if (!containerRef.current) return;
@@ -175,7 +178,7 @@ export function SplineSceneBasic({ onLoad }: { onLoad?: (splineApp?: any) => voi
       <Spotlight
         className="-top-40 left-0 md:left-60 md:-top-20"
         fill="#f97316"
-        fillOpacity="0.4"
+        fillOpacity="0.18"
       />
 
       <AnimatePresence>
@@ -218,10 +221,10 @@ export function SplineSceneBasic({ onLoad }: { onLoad?: (splineApp?: any) => voi
       </AnimatePresence>
       
       {/* Large Ambient Glow Sphere on the left of the hero section */}
-      <div className="absolute top-1/4 left-[-10%] w-[500px] md:w-[900px] h-[500px] md:h-[900px] bg-white/15 rounded-full filter blur-[100px] md:blur-[170px] pointer-events-none z-0" />
+      <div className="absolute top-1/4 left-[-10%] w-[500px] md:w-[900px] h-[500px] md:h-[900px] bg-white/10 rounded-full filter blur-[100px] md:blur-[170px] pointer-events-none z-0" />
       
       {/* Subtle Orange Glow Sphere on the top right */}
-      <div className="absolute top-0 right-[-10%] w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-orange-500/10 rounded-full filter blur-[100px] md:blur-[140px] pointer-events-none z-0" />
+      <div className="absolute top-0 right-[-10%] w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-orange-500/3 rounded-full filter blur-[100px] md:blur-[140px] pointer-events-none z-0" />
       
       <div className="max-w-[1920px] mx-auto px-4 md:px-12 w-full h-full flex flex-col md:flex-row items-center relative">
         
@@ -235,14 +238,14 @@ export function SplineSceneBasic({ onLoad }: { onLoad?: (splineApp?: any) => voi
           >
             <span className="block mb-2 md:mb-4">Deine neue</span>
             <span className="block mb-2 md:mb-4"><span className="text-neutral-300">Website</span> beginnt</span>
-            <span className="block mt-4 md:mt-6"><span className="text-white font-medium bg-orange-500 leading-none px-2.5 md:px-4 py-0 md:py-1 xl:px-5 md:rounded-full rounded-xl inline-block shadow-[0_0_20px_rgba(249,115,22,0.3)] tracking-normal translate-y-[-8px] md:translate-y-[-16px]">hier.</span></span>
+            <span className="block mt-4 md:mt-6"><span className="text-white font-medium bg-orange-500 leading-none px-2.5 md:px-4 py-0 md:py-1 xl:px-5 md:rounded-full rounded-xl inline-block shadow-[0_0_15px_rgba(249,115,22,0.15)] tracking-normal translate-y-[-8px] md:translate-y-[-16px]">hier.</span></span>
           </motion.h1>
-
+          
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.2, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-2 md:mt-4 lg:-mt-1 border-l-[3px] border-orange-500 pl-4 md:pl-5 pointer-events-auto shadow-[0_0_15px_rgba(249,115,22,0.1)]"
+            className="mt-2 md:mt-4 lg:-mt-1 border-l-[5px] border-orange-500 pl-4 md:pl-5 pointer-events-auto [filter:drop-shadow(0_0_8px_rgba(249,115,22,0.6))]"
           >
             <p className="text-neutral-200 text-base md:text-lg lg:text-xl max-w-lg leading-relaxed font-medium">
               Ich entwickle moderne Websites, die Vertrauen schaffen und Unternehmen <span className="text-white font-semibold flex items-center md:inline">professionell präsentieren.</span>
@@ -287,7 +290,7 @@ export function SplineSceneBasic({ onLoad }: { onLoad?: (splineApp?: any) => voi
               >
                 <div className="relative w-72 h-72 sm:w-96 sm:h-96 flex items-center justify-center select-none pointer-events-auto">
                   {/* Immersive radial glow underlay */}
-                  <div className="absolute w-[240px] sm:w-[320px] h-[240px] sm:h-[320px] bg-gradient-to-tr from-orange-500/20 to-sky-500/10 rounded-full blur-[40px] animate-pulse pointer-events-none" />
+                  <div className="absolute w-[240px] sm:w-[320px] h-[240px] sm:h-[320px] bg-gradient-to-tr from-orange-500/8 to-sky-500/5 rounded-full blur-[40px] animate-pulse pointer-events-none" />
 
                   {/* Simulated depth sphere with Framer Motion interactive drag - feels instant and premium */}
                   <motion.div
@@ -299,7 +302,7 @@ export function SplineSceneBasic({ onLoad }: { onLoad?: (splineApp?: any) => voi
                     className="relative w-44 sm:w-56 h-44 sm:h-56 rounded-full bg-gradient-to-br from-neutral-800/80 via-neutral-900/90 to-black/95 border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5),_inset_0_2px_4px_rgba(255,255,255,0.1)] flex items-center justify-center cursor-grab active:cursor-grabbing"
                   >
                     {/* Glowing core */}
-                    <div className="absolute w-20 sm:w-28 h-20 sm:h-28 rounded-full bg-gradient-to-tr from-orange-500/30 to-sky-500/25 blur-xl animate-pulse" />
+                    <div className="absolute w-20 sm:w-28 h-20 sm:h-28 rounded-full bg-gradient-to-tr from-orange-500/12 to-sky-500/10 blur-xl animate-pulse" />
                     
                     {/* Internal rotating core rings */}
                     <motion.div
@@ -310,12 +313,12 @@ export function SplineSceneBasic({ onLoad }: { onLoad?: (splineApp?: any) => voi
                     <motion.div
                       animate={{ rotate: -360 }}
                       transition={{ repeat: Infinity, duration: 12, ease: "linear" }}
-                      className="absolute w-28 sm:w-36 h-28 sm:h-36 border border-dashed border-orange-500/25 rounded-full"
+                      className="absolute w-28 sm:w-36 h-28 sm:h-36 border border-dashed border-orange-500/10 rounded-full"
                     />
 
                     {/* Cosmic center particle */}
                     <div className="absolute inset-4 rounded-full border border-white/[0.03] flex items-center justify-center">
-                      <div className="w-10 h-10 rounded-full border border-orange-500/40 bg-orange-500/10 flex items-center justify-center shadow-[0_0_15px_rgba(249,115,22,0.3)] animate-pulse">
+                      <div className="w-10 h-10 rounded-full border border-orange-500/20 bg-orange-500/5 flex items-center justify-center shadow-[0_0_15px_rgba(249,115,22,0.15)] animate-pulse">
                         <div className="w-2.5 h-2.5 bg-white rounded-full animate-ping" />
                       </div>
                     </div>
@@ -328,7 +331,7 @@ export function SplineSceneBasic({ onLoad }: { onLoad?: (splineApp?: any) => voi
                       rotate: [0, 180, 360]
                     }}
                     transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }}
-                    className="absolute top-10 right-10 w-4 h-4 rounded-full bg-orange-500/40 border border-white/20 shadow-[0_0_10px_rgba(249,115,22,0.5)]"
+                    className="absolute top-10 right-10 w-4 h-4 rounded-full bg-orange-500/20 border border-white/10 shadow-[0_0_10px_rgba(249,115,22,0.25)]"
                   />
                   <motion.div
                     animate={{ 
@@ -336,7 +339,7 @@ export function SplineSceneBasic({ onLoad }: { onLoad?: (splineApp?: any) => voi
                       rotate: [360, 180, 0]
                     }}
                     transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
-                    className="absolute bottom-12 left-8 w-3 h-3 rounded-full bg-sky-500/40 border border-white/20 shadow-[0_0_10px_rgba(14,165,233,0.5)]"
+                    className="absolute bottom-12 left-8 w-3 h-3 rounded-full bg-sky-500/25 border border-white/10 shadow-[0_0_10px_rgba(14,165,233,0.3)]"
                   />
                 </div>
               </div>

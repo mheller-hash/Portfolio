@@ -118,19 +118,21 @@ export default function App() {
       <main id="home" className="relative z-10 w-full h-screen flex flex-col items-center justify-center overflow-hidden bg-[#1d1e26]">
         <SplineSceneBasic />
         {/* Extreme immersive ambient color glow at the bottom of the Hero section, blending into the orange section */}
-        <div className="absolute bottom-0 left-0 right-0 h-[450px] sm:h-[600px] md:h-[750px] bg-gradient-to-t from-[#f97316]/20 via-[#ea580c]/10 via-[#7c2d12]/5 to-transparent pointer-events-none z-20 blur-[120px]" />
-        <div className="absolute bottom-0 left-0 right-0 h-[250px] sm:h-[350px] md:h-[450px] bg-gradient-to-t from-[#f97316]/10 via-[#ea580c]/5 to-transparent pointer-events-none z-20 blur-[80px]" />
-        <div className="absolute bottom-0 left-0 right-0 h-32 sm:h-48 md:h-64 bg-gradient-to-t from-[#f97316]/8 to-transparent pointer-events-none z-20" />
+        <div className="absolute bottom-0 left-0 right-0 h-[450px] sm:h-[600px] md:h-[750px] bg-gradient-to-t from-[#f97316]/8 via-[#ea580c]/4 via-[#7c2d12]/2 to-transparent pointer-events-none z-20 blur-[120px]" />
+        <div className="absolute bottom-0 left-0 right-0 h-[250px] sm:h-[350px] md:h-[450px] bg-gradient-to-t from-[#f97316]/4 via-[#ea580c]/2 to-transparent pointer-events-none z-20 blur-[80px]" />
+        <div className="absolute bottom-0 left-0 right-0 h-32 sm:h-48 md:h-64 bg-gradient-to-t from-[#f97316]/3 to-transparent pointer-events-none z-20" />
       </main>
 
       {/* About / Expertise Section */}
       <section id="about" className="py-24 md:py-48 relative z-20 bg-[#1d1e26]" style={{ contentVisibility: "auto", containIntrinsicSize: "0 800px" }}>
         {/* Top Curved Divider (Dome) pointing upwards into Hero */}
         <div className="absolute top-0 left-0 right-0 pointer-events-none z-10 overflow-visible" style={{ transform: "translateY(-99%)" }}>
+          {/* High-performance hardware-accelerated ambient glow replacing the expensive SVG shadow filter */}
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[1440px] h-32 sm:h-48 md:h-64 bg-gradient-to-t from-[#f97316]/12 via-[#f97316]/4 to-transparent blur-[50px] sm:blur-[80px] rounded-t-[100%] [will-change:transform] pointer-events-none z-0 translate-y-[20px]" />
           <svg
             viewBox="0 0 1440 120"
             preserveAspectRatio="none"
-            className="w-full h-36 sm:h-56 md:h-72 filter drop-shadow-[0_-20px_40px_rgba(249,115,22,0.35)]"
+            className="w-full h-36 sm:h-56 md:h-72 relative z-10"
           >
             <defs>
               <linearGradient id="extremeWideDomeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
