@@ -25,16 +25,6 @@ export function SplineSceneBasic({ onLoad }: { onLoad?: (splineApp?: any) => voi
   // Track if container is in view to pause rendering of WebGL when scrolled away
   const isInView = useInView(containerRef, { margin: "200px 0px 200px 0px" });
 
-  // Scroll Parallax connection with organic spring smoothing (subtle depth for optimal paint efficiency)
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"]
-  });
-  
-  const yScrollRaw = useTransform(scrollYProgress, [0, 1], [0, 20]);
-  // Super smooth, highly-damped spring to eliminate any shaky, wobbly scale or scroll jumps with fast rest-kill to optimize performance
-  const yScrollSpring = useSpring(yScrollRaw, { stiffness: 35, damping: 28, restSpeed: 0.005, restDelta: 0.005 });
-
   // Mouse proximity states for pseudo-3D parallax gaze/offset
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -49,10 +39,10 @@ export function SplineSceneBasic({ onLoad }: { onLoad?: (splineApp?: any) => voi
   const xOffset = useTransform(springX, [-0.5, 0.5], [-2, 2]);
   const yOffset = useTransform(springY, [-0.5, 0.5], [-2, 2]);
 
-  // Combined vertical animation offsets to prevent key duplicate issues in style maps
-  const combinedY = useTransform([yScrollSpring, yOffset], ([yScrollVal, yOffsetVal]) => {
+  // Combined vertical animation offsets using pure cursor feedback (removing useScroll to prevent lag/wobbles when scrolling)
+  const combinedY = useTransform(yOffset, (yOffsetVal) => {
     if (isMobile) return 0;
-    return (yScrollVal as number) + (yOffsetVal as number);
+    return yOffsetVal as number;
   });
 
   const handleMouseEnter = () => {
@@ -350,13 +340,13 @@ export function SplineSceneBasic({ onLoad }: { onLoad?: (splineApp?: any) => voi
                   className="absolute -inset-8 sm:-inset-12 md:-inset-16 flex items-center justify-center transition-all duration-1000 ease-in-out"
                   style={{ 
                     opacity: isReady ? 1 : 0,
-                    pointerEvents: isReady ? "auto" : "none",
+                    pointerEvents: "none",
                     transform: isReady ? "scale(1) translate3d(0,0,0)" : "scale(0.95) translate3d(0, 15px, 0)"
                   }}
                 >
                   <SplineScene 
                     scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-                    className="w-full h-full scale-[0.75] sm:scale-[0.8] md:scale-[0.9] lg:scale-[1.0] origin-center pointer-events-none md:pointer-events-auto"
+                    className="w-full h-full scale-[0.75] sm:scale-[0.8] md:scale-[0.9] lg:scale-[1.0] origin-center pointer-events-none"
                     onLoad={handleSplineLoad}
                   />
                 </div>
