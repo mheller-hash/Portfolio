@@ -344,7 +344,7 @@ export function SplineSceneBasic({ onLoad }: { onLoad?: (splineApp?: any) => voi
               {/* Live WebGL Spline scene overlay - blends in seamlessly once fully loaded and compiled */}
               {isMobile !== null && (
                 <div 
-                  className="absolute inset-0 flex items-center justify-center md:justify-end transition-all duration-1000 ease-in-out"
+                  className="absolute -inset-8 sm:-inset-12 md:-inset-16 flex items-center justify-center transition-all duration-1000 ease-in-out"
                   style={{ 
                     opacity: isReady ? 1 : 0,
                     pointerEvents: isReady ? "auto" : "none",
@@ -353,7 +353,7 @@ export function SplineSceneBasic({ onLoad }: { onLoad?: (splineApp?: any) => voi
                 >
                   <SplineScene 
                     scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-                    className="w-full h-full scale-[0.8] sm:scale-[0.85] md:scale-[0.95] lg:scale-[1.05] origin-center pointer-events-none md:pointer-events-auto"
+                    className="w-full h-full scale-[0.75] sm:scale-[0.8] md:scale-[0.9] lg:scale-[1.0] origin-center pointer-events-none md:pointer-events-auto"
                     onLoad={handleSplineLoad}
                   />
                 </div>
